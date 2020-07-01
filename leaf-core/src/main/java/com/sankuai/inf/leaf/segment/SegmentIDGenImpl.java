@@ -17,9 +17,12 @@ import java.util.concurrent.atomic.AtomicLong;
 public class SegmentIDGenImpl implements IDGen {
     private static final Logger logger = LoggerFactory.getLogger(SegmentIDGenImpl.class);
 
+    private String tableName;
+
     /**
      * IDCache未初始化成功时的异常码
      */
+
     private static final long EXCEPTION_ID_IDCACHE_INIT_FALSE = -1;
     /**
      * key不存在时的异常码
@@ -88,7 +91,7 @@ public class SegmentIDGenImpl implements IDGen {
         logger.info("update cache from db");
         StopWatch sw = new Slf4JStopWatch();
         try {
-            List<String> dbTags = dao.getAllTags();
+            List<String> dbTags = dao.getAllTags(tableName);
             if (dbTags == null || dbTags.isEmpty()) {
                 return;
             }
@@ -160,11 +163,11 @@ public class SegmentIDGenImpl implements IDGen {
         SegmentBuffer buffer = segment.getBuffer();
         LeafAlloc leafAlloc;
         if (!buffer.isInitOk()) {
-            leafAlloc = dao.updateMaxIdAndGetLeafAlloc(key);
+            leafAlloc = dao.updateMaxIdAndGetLeafAlloc(tableName,key);
             buffer.setStep(leafAlloc.getStep());
             buffer.setMinStep(leafAlloc.getStep());//leafAlloc中的step为DB中的step
         } else if (buffer.getUpdateTimestamp() == 0) {
-            leafAlloc = dao.updateMaxIdAndGetLeafAlloc(key);
+            leafAlloc = dao.updateMaxIdAndGetLeafAlloc(tableName,key);
             buffer.setUpdateTimestamp(System.currentTimeMillis());
             buffer.setStep(leafAlloc.getStep());
             buffer.setMinStep(leafAlloc.getStep());//leafAlloc中的step为DB中的step
@@ -186,7 +189,7 @@ public class SegmentIDGenImpl implements IDGen {
             LeafAlloc temp = new LeafAlloc();
             temp.setKey(key);
             temp.setStep(nextStep);
-            leafAlloc = dao.updateMaxIdByCustomStepAndGetLeafAlloc(temp);
+            leafAlloc = dao.updateMaxIdByCustomStepAndGetLeafAlloc(tableName,temp);
             buffer.setUpdateTimestamp(System.currentTimeMillis());
             buffer.setStep(nextStep);
             buffer.setMinStep(leafAlloc.getStep());//leafAlloc的step为DB中的step
@@ -274,7 +277,11 @@ public class SegmentIDGenImpl implements IDGen {
     }
 
     public List<LeafAlloc> getAllLeafAllocs() {
-        return dao.getAllLeafAllocs();
+        return dao.getAllLeafAllocs(tableName);
+    }
+
+    public LeafAlloc updateMaxIdAndGetLeafAlloc(String tag) {
+        return dao.updateMaxIdAndGetLeafAlloc(tableName,tag);
     }
 
     public Map<String, SegmentBuffer> getCache() {
@@ -287,5 +294,18 @@ public class SegmentIDGenImpl implements IDGen {
 
     public void setDao(IDAllocDao dao) {
         this.dao = dao;
+    }
+
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public SegmentIDGenImpl(String tableName) {
+        this.tableName = tableName;
     }
 }

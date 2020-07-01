@@ -6,6 +6,8 @@ public class LeafAlloc {
     private int step;
     private String updateTime;
 
+    private String tableName;
+
     public String getKey() {
         return key;
     }
@@ -36,5 +38,13 @@ public class LeafAlloc {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 }
