@@ -71,7 +71,7 @@ public class WorkerIdAllocDaoImpl implements WorkerIdAllocDao {
             return workerIdAlloc;
         } catch (Exception e) {
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.SECONDS.sleep(2);
             } catch (InterruptedException e1) {
             }
             log.error("初始化workerId异常："+e.getMessage());
