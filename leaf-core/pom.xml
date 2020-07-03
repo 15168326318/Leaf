@@ -1,6 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.sankuai.inf.leaf</groupId>
         <artifactId>leaf-parent</artifactId>
@@ -17,8 +18,19 @@
         <log4j.version>2.7</log4j.version>
         <mybatis-spring.version>1.2.5</mybatis-spring.version>
         <maven.test.skip>true</maven.test.skip>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>co.faao</groupId>
+            <artifactId>speed-abase</artifactId>
+            <version>6.3.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>

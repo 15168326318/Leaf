@@ -1,5 +1,6 @@
 package com.sankuai.inf.leaf.snowflake;
 
+import co.faao.plugin.starter.properties.PropertiesValue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sankuai.inf.leaf.snowflake.exception.CheckLastTimeException;
@@ -26,13 +27,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-public class SnowflakeZookeeperHolder {
+public class SnowflakeZookeeperHolder  implements SnowflakeHolder {
     private static final Logger LOGGER = LoggerFactory.getLogger(SnowflakeZookeeperHolder.class);
     private String zk_AddressNode = null;//保存自身的key  ip:port-000000001
     private String listenAddress = null;//保存自身的key ip:port
     private int workerID;
-    private static final String PREFIX_ZK_PATH = "/snowflake";
-    private static final String PROP_PATH = System.getProperty("java.io.tmpdir") + "/leafconf/{port}/workerID.properties";
+    private static final String PREFIX_ZK_PATH = "/snowflake" + File.separator + PropertiesValue.servicenameurl ;
+    private static final String PROP_PATH = System.getProperty("java.io.tmpdir")  + File.separator +  PropertiesValue.servicenameurl + "/leafconf/{port}/workerID.properties";
     private static final String PATH_FOREVER = PREFIX_ZK_PATH + "/forever";//保存所有数据持久的节点
     private String ip;
     private String port;
@@ -46,6 +47,7 @@ public class SnowflakeZookeeperHolder {
         this.connectionString = connectionString;
     }
 
+    @Override
     public boolean init() {
         try {
             CuratorFramework curator = createWithOptions(connectionString, new RetryUntilElapsed(1000, 4), 10000, 6000);
@@ -281,7 +283,7 @@ public class SnowflakeZookeeperHolder {
     public void setListenAddress(String listenAddress) {
         this.listenAddress = listenAddress;
     }
-
+    @Override
     public int getWorkerID() {
         return workerID;
     }
