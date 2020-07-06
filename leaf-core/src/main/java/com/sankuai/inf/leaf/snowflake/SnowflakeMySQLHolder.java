@@ -65,7 +65,7 @@ public class SnowflakeMySQLHolder implements SnowflakeHolder {
         Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
             @Override
             public Thread newThread(Runnable r) {
-                Thread thread = new Thread(r, "schedule-upload-time");
+                Thread thread = new Thread(r, "schedule-update-time");
                 thread.setDaemon(true);
                 return thread;
             }

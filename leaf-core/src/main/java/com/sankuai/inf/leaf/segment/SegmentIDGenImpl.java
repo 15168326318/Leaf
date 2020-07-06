@@ -88,7 +88,7 @@ public class SegmentIDGenImpl implements IDGen {
     }
 
     private void updateCacheFromDb() {
-        logger.info("update cache from db");
+//        logger.info("update cache from db");
         StopWatch sw = new Slf4JStopWatch();
         try {
             List<String> dbTags = dao.getAllTags(tableName);
@@ -129,7 +129,7 @@ public class SegmentIDGenImpl implements IDGen {
         } catch (Exception e) {
             logger.warn("update cache from db exception", e);
         } finally {
-            sw.stop("updateCacheFromDb");
+//            sw.stop("updateCacheFromDb");
         }
     }
 
