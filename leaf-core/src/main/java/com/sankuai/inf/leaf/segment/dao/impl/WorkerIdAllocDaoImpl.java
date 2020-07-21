@@ -67,7 +67,7 @@ public class WorkerIdAllocDaoImpl implements WorkerIdAllocDao {
             int status = sqlSession.insert("com.sankuai.inf.leaf.segment.dao.WorkerIdAllocMapper.insertNotUsedWorkerId", workerIdAlloc);
 
             sqlSession.commit();
-            log.error("初始化workerId成功！");
+            log.info("初始化workerId成功！");
             return workerIdAlloc;
         } catch (Exception e) {
             try {
